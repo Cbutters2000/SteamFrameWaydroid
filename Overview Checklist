@@ -1,0 +1,24 @@
+To install waydroid on steam frame you have to do several things:
+
+A) install dependencies that waydroid needs, but don't install over packages that already exist on SteamOS natively.
+B) install the ARM64 version of waydroid
+C) Take into account when to make steamos readonly and when not
+D) Also make sure to not install waydroid directly into /var as there is not enough space, you have to map it to another location with symlinks
+E) Once waydroid is installed you need to open up the firewall
+	sudo -S firewall-cmd --zone=trusted --add-interface=waydroid0 &>
+  sudo -S firewall-cmd --zone=trusted --add-port=53/udp
+	sudo -S firewall-cmd --zone=trusted --add-port=67/udp
+	sudo -S firewall-cmd --zone=trusted --add-forward
+	sudo -S firewall-cmd --runtime-to-permanent
+F) You may need to start FAKEWIFI
+waydroid prop set persist.waydroid.fake_wifi "*"
+
+Notes:
+Useful Commands
+waydroid session start
+waydroid session stop
+waydroid show-full-ui
+systemctl restart waydroid-container
+
+Getting Android ID for Play Store Activation:
+sudo waydroid shell -- sh -c "sqlite3 /data/data/*/*/gservices.db 'select value from main where name = \"android_id\";'"
